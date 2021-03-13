@@ -1,6 +1,6 @@
 ![CI](https://github.com/spinnaker-plugin-examples/pf4jStagePlugin/workflows/CI/badge.svg)
 
-The [evaluateArtifactsStagePlugin](https://github.com/armory-plugins/evaluateArtifactsStagePlugin), also called the EvaluateArtifacts plugin, creates a custom pipeline stage that evaluates artifacts of a pipeline.
+The [evaluateArtifactsStagePlugin](https://github.com/armory-plugins/evaluate-artifacts), also called the EvaluateArtifacts plugin, creates a custom pipeline stage that evaluates artifacts of a pipeline for SpEL expressions.
 
 # Version Compatibility
 
