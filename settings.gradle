@@ -6,7 +6,7 @@ pluginManagement {
   }
 }
 
-rootProject.name = "evaluateArtifactsPlugin"
+rootProject.name = "evaluate-artifacts"
 
 include "evaluate-artifacts-orca", "evaluate-artifacts-deck"
 
