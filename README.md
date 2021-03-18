@@ -20,6 +20,9 @@ spinnaker:
     plugins:
       Armory.EvaluateArtifactsPlugin:
         enabled: true
+        extensions:
+          armory.evaluateArtifactsStage:
+            enabled: true
 ```
 
 Or use the [evaluateArtifactsRepository](https://github.com/armory-plugins/evaluate-artifacts-releases) to avoid copying the plugin `.zip` artifact.
