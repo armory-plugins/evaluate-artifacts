@@ -85,7 +85,7 @@ jobs:
         uses: armory-io/plugin-metadata-updater@master
         env:
           JAVA_HOME: ''
-          GITHUB_OAUTH: ${{ secrets.OAUTH_TOKEN }}
+          GITHUB_OAUTH: ${{ secrets.TOKEN }}
         with:
           metadata: build/distributions/plugin-info.json
           binary_url: https://github.com/${{ steps.get_project_info.outputs.REPO }}/releases/download/${{ steps.get_project_info.outputs.VERSION }}/${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip
