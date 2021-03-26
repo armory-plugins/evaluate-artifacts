@@ -16,15 +16,12 @@ export interface Artifact {
 
 export const EvaluateArtifactsStageModal = ({ toggleModal, stage, artifact }: any) => {
   const [taskMonitor, setTaskMonitor] = useState(new TaskMonitor({ title: "I'm never used" }))
-  const [isSubmitting, setSubmittingState] = useState<boolean>(false)
   const { expectedArtifacts, artifactContents } = stage;
   const generateArtifact = (values: Artifact) => {
     const { name, id, contents } = values;
     const evaluateArtifactsIndex = artifactContents.findIndex((item: Artifact) => item.id === id);
     const producedArtifactIndex =  expectedArtifacts.findIndex((item: any) => item.id === id);
     const hasProducedArtifact = producedArtifactIndex >= 0 && evaluateArtifactsIndex >= 0;
-
-    setSubmittingState(true);
 
     if (hasProducedArtifact) {
       stage.artifactContents[evaluateArtifactsIndex].name = name;
@@ -60,12 +57,12 @@ export const EvaluateArtifactsStageModal = ({ toggleModal, stage, artifact }: an
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <WizardModal
-            heading="New Artifact"
+            heading="Artifact Contents"
             initialValues={artifact}
             taskMonitor={taskMonitor}
             dismissModal={toggleModal}
             closeModal={generateArtifact}
-            submitButtonLabel="Create Artifact"
+            submitButtonLabel={`${artifact.name !== '' ? 'Update' : 'Create'} Artifact`}
             render={(props) => (
               <div className="row">
                 <div className="col-sm-12">
