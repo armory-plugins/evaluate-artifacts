@@ -57,7 +57,7 @@ export const EvaluateArtifactsStageModal = ({ toggleModal, stage, artifact }: an
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <WizardModal
-            heading="New Artifact"
+            heading="Artifact Contents"
             initialValues={artifact}
             taskMonitor={taskMonitor}
             dismissModal={toggleModal}
