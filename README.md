@@ -12,20 +12,34 @@ The [evaluateArtifactsStagePlugin](https://github.com/armory-plugins/evaluate-ar
 
 1) Run `./gradlew releaseBundle`
 2) Put the `/build/distributions/<project>-<version>.zip` into the [configured plugins location for your service](https://pf4j.org/doc/packaging.html).
-3) Configure the Spinnaker service. Put the following in the service yml to enable the plugin and configure the extension:
+3) Configure the Spinnaker services. Put the following in the Spinnaker config to enable the plugin and configure the extension:
 
-```
-spinnaker:
-  extensibility:
-    plugins:
-      Armory.EvaluateArtifactsPlugin:
-        enabled: true
-        extensions:
-          armory.evaluateArtifactsStage:
+```yaml
+spinnakerConfig:
+  profiles:
+    gate:
+      spinnaker:
+        extensibility:
+          # deck-proxy is needed for deck to retrieve the front-end components of the plugin
+          deck-proxy:
             enabled: true
+            plugins:
+              Armory.EvaluateArtifactsPlugin:
+                enabled: true
+                version: 0.0.10
+
+    spinnaker:
+      extensibility:
+        plugins:
+          Armory.EvaluateArtifactsPlugin:
+            enabled: true
+            version: 0.0.10
+        repositories:
+          evaluateArtifacts:
+            url: https://raw.githubusercontent.com/armory-plugins/evaluate-artifacts-releases/master/repositories.json
 ```
 
-Or use the [evaluateArtifactsRepository](https://github.com/armory-plugins/evaluate-artifacts-releases) to avoid copying the plugin `.zip` artifact.
+See the [Evaluate Artifacts Repository](https://github.com/armory-plugins/evaluate-artifacts-releases) for official releases.
 
 ## Deployment on Spinnaker 1.24.0+
 
