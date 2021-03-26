@@ -10,7 +10,7 @@ import {
 } from '@spinnaker/core';
 export interface Artifact {
   name: string;
-  content: string;
+  contents: string;
   id: string;
 }
 
@@ -19,7 +19,7 @@ export const EvaluateArtifactsStageModal = ({ toggleModal, stage, artifact }: an
   const [isSubmitting, setSubmittingState] = useState<boolean>(false)
   const { expectedArtifacts, artifactContents } = stage;
   const generateArtifact = (values: Artifact) => {
-    const { name, id, content } = values;
+    const { name, id, contents } = values;
     const evaluateArtifactsIndex = artifactContents.findIndex((item: Artifact) => item.id === id);
     const producedArtifactIndex =  expectedArtifacts.findIndex((item: any) => item.id === id);
     const hasProducedArtifact = producedArtifactIndex >= 0 && evaluateArtifactsIndex >= 0;
@@ -28,7 +28,7 @@ export const EvaluateArtifactsStageModal = ({ toggleModal, stage, artifact }: an
 
     if (hasProducedArtifact) {
       stage.artifactContents[evaluateArtifactsIndex].name = name;
-      stage.artifactContents[evaluateArtifactsIndex].content = content;
+      stage.artifactContents[evaluateArtifactsIndex].contents = contents;
       stage.expectedArtifacts[producedArtifactIndex].displayName = name;
       stage.expectedArtifacts[producedArtifactIndex].matchArtifact.name = name;
     } else {
@@ -65,7 +65,7 @@ export const EvaluateArtifactsStageModal = ({ toggleModal, stage, artifact }: an
             taskMonitor={taskMonitor}
             dismissModal={toggleModal}
             closeModal={generateArtifact}
-            submitButtonLabel="Save Artifact"
+            submitButtonLabel="Create Artifact"
             render={(props) => (
               <div className="row">
                 <div className="col-sm-12">
