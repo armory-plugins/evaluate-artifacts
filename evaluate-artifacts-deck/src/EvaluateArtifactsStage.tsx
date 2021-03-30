@@ -4,6 +4,7 @@ import {
   IStageTypeConfig,
 } from '@spinnaker/core';
 import { EvaluateArtifactsStageConfig } from './EvaluateArtifactsStageConfig';
+import { EvaluateArtifactsExecutionDetails } from './EvaluateArtifactsExecutionDetails';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace EvaluateArtifactsStage {
@@ -15,6 +16,6 @@ export const evaluateArtifactsStage: IStageTypeConfig = {
   label: `Evaluate Artifacts`,
   description: 'Create artifacts from contents.',
   component: EvaluateArtifactsStageConfig,
-  executionDetailsSections: [ExecutionDetailsTasks],
+  executionDetailsSections: [EvaluateArtifactsExecutionDetails, ExecutionDetailsTasks],
   producesArtifacts: true,
 };
