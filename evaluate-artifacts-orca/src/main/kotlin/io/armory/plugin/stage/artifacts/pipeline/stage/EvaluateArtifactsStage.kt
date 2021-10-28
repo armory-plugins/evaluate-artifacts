@@ -12,10 +12,10 @@ import com.netflix.spinnaker.orca.pipeline.expressions.PipelineExpressionEvaluat
 import com.netflix.spinnaker.orca.pipeline.tasks.artifacts.BindProducedArtifactsTask
 import com.netflix.spinnaker.orca.pipeline.util.ContextParameterProcessor
 import io.armory.plugin.stage.artifacts.pipeline.task.EvaluateArtifactsTask
-import org.jetbrains.annotations.NotNull
-import org.springframework.stereotype.Component
 import java.util.*
 import kotlin.collections.ArrayList
+import org.jetbrains.annotations.NotNull
+import org.springframework.stereotype.Component
 
 @Component
 @ExposeToApp

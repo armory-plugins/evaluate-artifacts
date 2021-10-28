@@ -10,7 +10,6 @@ import io.armory.plugin.stage.artifacts.pipeline.task.EvaluateArtifactsTask
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-
 class EvaluateArtifactsStageTest : JUnit5Minutests {
 
   fun tests() = rootContext {

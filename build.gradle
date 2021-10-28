@@ -10,10 +10,6 @@ plugins {
   id("com.diffplug.spotless").version("5.1.0")
 }
 
-repositories {
-  mavenCentral()
-}
-
 spinnakerBundle {
   pluginId = "Armory.EvaluateArtifactsPlugin"
   description = "An plugin that evaluates artifacts of a pipeline stage."
@@ -26,6 +22,24 @@ version = normalizedVersion()
 subprojects {
   group = "io.armory.plugin.stage.artifacts"
   version = rootProject.version
+  repositories {
+    mavenCentral()
+    maven {
+      url 'https://armory.jfrog.io/armory/gradle-dev-local/'
+      credentials {
+        username = "${artifactory_user}"
+        password = "${artifactory_password}"
+      }
+    }
+
+    maven {
+      url 'https://armory.jfrog.io/artifactory/spinnaker/'
+      credentials {
+        username = "${artifactory_user}"
+        password = "${artifactory_password}"
+      }
+    }
+  }
 
   if (name != "evaluate-artifacts-deck") {
     apply plugin: "com.diffplug.spotless"

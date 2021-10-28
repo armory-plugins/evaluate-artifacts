@@ -50,40 +50,40 @@ class EvaluateArtifactsStageIntegrationTest : JUnit5Minutests {
         }
       }
 
-       test("EvaluateArtifactsStage can be executed as a stage within a live pipeline execution") {
-         val response = mockMvc.post("/orchestrate") {
-           contentType = MediaType.APPLICATION_JSON
-           content = mapper.writeValueAsString(mapOf(
-             "application" to "evaluate-artifacts-stage-plugin",
-             "stages" to listOf(mapOf(
-               "refId" to "1",
-               "type" to "evaluateArtifacts",
-               "artifactContents" to emptyList<EvaluateArtifactsStage.EvaluateArtifactsStageContext.Content>(),
-               "expectedArtifacts" to emptyList<ExpectedArtifact>()
-             ))
-           ))
-         }.andReturn().response
+      test("EvaluateArtifactsStage can be executed as a stage within a live pipeline execution") {
+        val response = mockMvc.post("/orchestrate") {
+          contentType = MediaType.APPLICATION_JSON
+          content = mapper.writeValueAsString(mapOf(
+            "application" to "evaluate-artifacts-stage-plugin",
+            "stages" to listOf(mapOf(
+              "refId" to "1",
+              "type" to "evaluateArtifacts",
+              "artifactContents" to emptyList<EvaluateArtifactsStage.EvaluateArtifactsStageContext.Content>(),
+              "expectedArtifacts" to emptyList<ExpectedArtifact>()
+            ))
+          ))
+        }.andReturn().response
 
-         expect {
-           that(response.status).isEqualTo(200)
-         }
+        expect {
+          that(response.status).isEqualTo(200)
+        }
 
-         val ref = mapper.readValue<ExecutionRef>(response.contentAsString).ref
+        val ref = mapper.readValue<ExecutionRef>(response.contentAsString).ref
 
-         var execution: Execution
-         do {
-           execution = mapper.readValue(mockMvc.get(ref).andReturn().response.contentAsString)
-         } while (execution.status != "SUCCEEDED")
+        var execution: Execution
+        do {
+          execution = mapper.readValue(mockMvc.get(ref).andReturn().response.contentAsString)
+        } while (execution.status != "SUCCEEDED")
 
-         expect {
-           that(execution)
-             .get { stages.first() }
-             .and {
-               get { type }.isEqualTo("evaluateArtifacts")
-               get { status }.isEqualTo("SUCCEEDED")
-             }
-         }
-       }
+        expect {
+          that(execution)
+            .get { stages.first() }
+            .and {
+              get { type }.isEqualTo("evaluateArtifacts")
+              get { status }.isEqualTo("SUCCEEDED")
+            }
+        }
+      }
     }
   }
 
