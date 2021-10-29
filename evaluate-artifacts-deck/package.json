@@ -6,12 +6,13 @@
   "scripts": {
     "clean": "npx shx rm -rf build",
     "develop": "npm run clean && run-p watch proxy",
-    "build": "npm run clean && rollup -c",
+    "build": "npm run clean && NODE_ENV=production rollup -c",
     "lint": "eslint --ext js,jsx,ts,tsx src",
     "postinstall": "check-plugin && check-peer-dependencies || true",
     "prettier": "prettier --write 'src/**/*.{js,jsx,ts,tsx,html,css,less,json}'",
     "proxy": "dev-proxy",
-    "watch": "rollup -c -w --no-watch.clearScreen"
+    "watch": "rollup -c -w --no-watch.clearScreen",
+    "prepare": "husky-install"
   },
   "dependencies": {
     "@spinnaker/core": "0.0.574",
@@ -42,7 +43,6 @@
     "eslint": "7.10.0",
     "eslint-config-prettier": "6.12.0",
     "eslint-plugin-react-hooks": "4.1.2",
-    "husky": "4.3.8",
     "lodash": "^4.17.19",
     "node-sass": "^5.0.0",
     "npm-run-all": "4.1.5",
