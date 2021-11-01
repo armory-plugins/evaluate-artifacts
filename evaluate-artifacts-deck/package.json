@@ -12,7 +12,8 @@
     "prettier": "prettier --write 'src/**/*.{js,jsx,ts,tsx,html,css,less,json}'",
     "proxy": "dev-proxy",
     "watch": "rollup -c -w --no-watch.clearScreen",
-    "prepare": "husky-install"
+    "prepare": "husky-install",
+    "modules": "echo 'no-op'"
   },
   "dependencies": {
     "@spinnaker/core": "0.0.574",
