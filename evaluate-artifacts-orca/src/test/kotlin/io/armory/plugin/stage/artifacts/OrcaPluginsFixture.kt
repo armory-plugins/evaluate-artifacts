@@ -21,18 +21,25 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.netflix.spinnaker.kork.plugins.internal.PluginJar
 import com.netflix.spinnaker.orca.StageResolver
 import com.netflix.spinnaker.orca.api.test.OrcaFixture
+import io.armory.commons.plugins.ArmoryServiceVersionManager
+import java.io.File
+import org.pf4j.VersionManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.Primary
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.web.servlet.MockMvc
-import java.io.File
 
 @TestPropertySource(properties = [
   "spinnaker.extensibility.plugins.Armory.EvaluateArtifactsPlugin.enabled=true",
   "spinnaker.extensibility.plugins-root-path=build/plugins"
   ])
-  @AutoConfigureMockMvc
-  class OrcaPluginsFixture : OrcaFixture() {
+@AutoConfigureMockMvc
+@Import(OrcaPluginsFixture.OrcaFixtureConfiguration::class)
+class OrcaPluginsFixture : OrcaFixture() {
 
   @Autowired
   lateinit var stageResolver: StageResolver
@@ -54,5 +61,15 @@ import java.io.File
       .pluginVersion("1.0.0")
       .manifestAttribute("Plugin-Requires", "orca>=0.0.0")
       .build()
+  }
+
+  @TestConfiguration
+  class OrcaFixtureConfiguration {
+
+    @Primary
+    @Bean
+    fun armoryVersionManager(): VersionManager {
+      return ArmoryServiceVersionManager("orca")
+    }
   }
 }

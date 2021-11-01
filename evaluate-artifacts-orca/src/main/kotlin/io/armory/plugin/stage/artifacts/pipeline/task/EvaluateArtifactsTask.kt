@@ -7,9 +7,9 @@ import com.netflix.spinnaker.orca.api.pipeline.TaskResult
 import com.netflix.spinnaker.orca.api.pipeline.models.ExecutionStatus
 import com.netflix.spinnaker.orca.api.pipeline.models.StageExecution
 import io.armory.plugin.stage.artifacts.pipeline.stage.EvaluateArtifactsStage
-import org.springframework.stereotype.Component
 import java.util.*
 import java.util.stream.Collectors
+import org.springframework.stereotype.Component
 
 @Component
 @ExposeToApp
