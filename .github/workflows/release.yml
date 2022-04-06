@@ -72,7 +72,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
           asset_path: ./${{ steps.get_project_info.outputs.PROJECT_KEBAB }}-${{ steps.get_project_info.outputs.VERSION }}.tar
           asset_name: ${{ steps.get_project_info.outputs.PROJECT_KEBAB }}-${{ steps.get_project_info.outputs.VERSION }}.tar
-          asset_content_type: application/zip
+          asset_content_type: application/x-tar
           
       - name: upload release asset for deck
         uses: actions/upload-release-asset@v1
@@ -93,4 +93,4 @@ jobs:
         with:
           metadata: build/distributions/plugin-info.json
           binary_url: https://github.com/${{ steps.get_project_info.outputs.REPO }}/releases/download/${{ steps.get_project_info.outputs.VERSION }}/${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip
-          metadata_repo_url: https://github.com/armory-plugins/evaluate-artifacts-releases
+          metadata_repo_url: https://github.com/armory-plugins/pluginRepository
