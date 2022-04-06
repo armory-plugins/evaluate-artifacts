@@ -1,6 +1,13 @@
 buildscript {
   repositories {
     mavenCentral()
+    maven {
+      url 'https://armory.jfrog.io/armory/gradle-plugins/'
+      credentials {
+        username = "${artifactory_user}"
+        password = "${artifactory_password}"
+      }
+    }
   }
 }
 
