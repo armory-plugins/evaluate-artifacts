@@ -16,12 +16,14 @@
     "modules": "echo 'no-op'"
   },
   "dependencies": {
-    "@spinnaker/core": "0.0.574",
-    "@spinnaker/pluginsdk": "0.2.0",
-    "@spinnaker/pluginsdk-peerdeps": "0.0.16",
-    "@spinnaker/presentation": "0.0.5",
+    "@spinnaker/core": "0.16.0",
+    "@spinnaker/pluginsdk": "0.2.3",
+    "@spinnaker/pluginsdk-peerdeps": "0.0.18",
+    "@spinnaker/presentation": "0.1.0",
+    "@types/react-dom": "17.0.14",
     "@uirouter/core": "6.0.4",
     "@uirouter/react": "1.0.2",
+    "graphql": "15.8.0",
     "lodash-es": "4.17.15",
     "prop-types": "15.6.1",
     "react": "16.14.0",
