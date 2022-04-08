@@ -13,7 +13,7 @@ jobs:
       ORG_GRADLE_PROJECT_artifactory_user: '${{secrets.ARTIFACTORY_USER}}'
       ORG_GRADLE_PROJECT_artifactory_password: '${{secrets.ARTIFACTORY_TOKEN}}'
       ARTIFACTORY_USER: '${{secrets.ARTIFACTORY_USER}}'
-      ARTIFACTORY_PASSWORD: '${{secrets.ARTIFACTORY_PASSWORD}}'
+      ARTIFACTORY_PASSWORD: '${{secrets.ARTIFACTORY_TOKEN}}'
     steps:
       - name: Fix up git URLs
         run: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
