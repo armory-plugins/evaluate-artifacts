@@ -1,1 +1,9 @@
 apply plugin: "io.spinnaker.plugin.ui-extension"
+
+task generateNpmRc(type: Exec) {
+    workingDir "$projectDir"
+    commandLine "sh", "-c", "echo \"@spinnaker:registry=https://armory.jfrog.io/artifactory/api/npm/npm-all/\" > .npmrc && " +
+            "curl -u${artifactory_user}:${artifactory_password} https://armory.jfrog.io/artifactory/api/npm/auth >> .npmrc"
+}
+
+yarn.dependsOn generateNpmRc
