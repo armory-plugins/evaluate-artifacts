@@ -2,3 +2,5 @@ build
 .gradle
 .idea
 node_modules
+.husky
+.npmrc
