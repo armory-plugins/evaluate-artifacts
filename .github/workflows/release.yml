@@ -40,6 +40,17 @@ jobs:
           echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
           echo ::set-output name=REPO::${GITHUB_REPOSITORY}
 
+      - name: build docker image
+        run: |
+          docker build -t armory/${{ steps.get_project_info.outputs.PROJECT }}:${{ steps.get_project_info.outputs.VERSION }} -f build-tools/Dockerfile .
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
+
+      - name: Publish Image to Docker Hub
+        run: |
+          docker push armory/${{ steps.get_project_info.outputs.PROJECT }}:${{ steps.get_project_info.outputs.VERSION }}
+
       - name: create release
         id: create_release
         uses: actions/create-release@v1
@@ -62,23 +73,6 @@ jobs:
           asset_name: ${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip
           asset_content_type: application/zip
 
-      - name: build docker image
-        id: build-docker-image
-        run: |
-          docker build -t gcr.io/cloud-armory/${{ steps.get_project_info.outputs.PROJECT_KEBAB }}:${{ steps.get_project_info.outputs.VERSION }} -f ./Dockerfile .
-          docker save -o ./${{ steps.get_project_info.outputs.PROJECT_KEBAB }}-${{ steps.get_project_info.outputs.VERSION }}.tar gcr.io/cloud-armory/${{ steps.get_project_info.outputs.PROJECT_KEBAB }}:${{ steps.get_project_info.outputs.VERSION }}
-      
-      - name: upload image to release
-        id: upload-image-to-release 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./${{ steps.get_project_info.outputs.PROJECT_KEBAB }}-${{ steps.get_project_info.outputs.VERSION }}.tar
-          asset_name: ${{ steps.get_project_info.outputs.PROJECT_KEBAB }}-${{ steps.get_project_info.outputs.VERSION }}.tar
-          asset_content_type: application/x-tar
-          
       - name: upload release asset for deck
         uses: actions/upload-release-asset@v1
         env:
