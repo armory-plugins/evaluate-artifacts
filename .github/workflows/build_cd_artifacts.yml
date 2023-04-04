@@ -50,18 +50,10 @@ jobs:
           jfrog rt dp ${{ steps.variables.outputs.artifactory_image_name }} ${{ steps.variables.outputs.artifactory_docker_repository }} \
             --build-name=${{ steps.variables.outputs.build_name }} \
             --build-number=${{ steps.variables.outputs.build_number }}
-          
+
           jfrog rt sp "${{ steps.variables.outputs.artifactory_docker_repository }}/armory/${{ steps.variables.outputs.repo }}/${{ steps.variables.outputs.version }}/manifest.json" "spinnaker-plugin=true"
 
           jfrog rt bag ${{ steps.variables.outputs.build_name }} ${{ steps.variables.outputs.build_number }}
 
           jfrog rt bp ${{ steps.variables.outputs.build_name }} ${{ steps.variables.outputs.build_number }} \
             --build-url=${{ steps.variables.outputs.build_url }}
-
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
-
-      - name: Publish Image to Docker Hub
-        run: |
-          docker image tag ${{ steps.variables.outputs.artifactory_image_name }} ${{ steps.variables.outputs.image_name }}
-          docker push ${{ steps.variables.outputs.image_name }}

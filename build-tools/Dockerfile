@@ -7,4 +7,4 @@ ADD build-tools/install.sh /usr/local/bin/install.sh
 
 RUN adduser -D spinnaker && addgroup spinnaker spinnaker
 
-CMD ["install.sh"]
+ENTRYPOINT ["sh", "/usr/local/bin/install.sh"]
