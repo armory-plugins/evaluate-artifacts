@@ -36,8 +36,8 @@ class EvaluateArtifactsStageIntegrationTest : JUnit5Minutests {
 
   fun tests() = rootContext<OrcaPluginsFixture> {
     context("a running Orca instance") {
-      orcaFixture {
-        OrcaPluginsFixture()
+      this.orcaFixture {
+          OrcaPluginsFixture()
       }
 
       test("EvaluateArtifactsStage extension is resolved to the correct type") {
@@ -58,7 +58,7 @@ class EvaluateArtifactsStageIntegrationTest : JUnit5Minutests {
             "stages" to listOf(mapOf(
               "refId" to "1",
               "type" to "evaluateArtifacts",
-              "artifactContents" to emptyList<EvaluateArtifactsStage.EvaluateArtifactsStageContext.Content>(),
+              "artifactContents" to emptyList<EvaluateArtifactsStage.EvaluateArtifactsStageContext>(),
               "expectedArtifacts" to emptyList<ExpectedArtifact>()
             ))
           ))
