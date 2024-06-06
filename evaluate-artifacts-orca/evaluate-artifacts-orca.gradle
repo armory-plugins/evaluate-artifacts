@@ -25,22 +25,27 @@ spinnakerPlugin {
 }
 
 dependencies {
-  compileOnly 'org.projectlombok:lombok:1.18.16'
-  annotationProcessor 'org.projectlombok:lombok:1.18.16'
-
-  testCompileOnly 'org.projectlombok:lombok:1.18.16'
-  testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
-
-  compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+  implementation platform("io.spinnaker.orca:orca-bom:${orcaVersion}")
   compileOnly(enforcedPlatform(group: "io.spinnaker.kork", name: "kork-bom", version: "${korkVersion}"))
-  compileOnly(enforcedPlatform(group: "io.spinnaker.orca", name: "orca-bom", version: "${orcaVersion}"))
-  compileOnly (group: 'org.springframework', name: 'spring-context', version: '5.2.1.RELEASE')
-  compileOnly (group: 'io.spinnaker.kork', name: 'kork-plugins-spring-api')
-  compileOnly (group: 'org.springframework', name: 'spring-web', version: '5.2.2.RELEASE')
-  compileOnly (group: 'io.spinnaker.orca', name: 'orca-core')
-  compile 'org.jetbrains:annotations:16.0.2'
 
-  testImplementation(enforcedPlatform(group: "io.spinnaker.kork", name: "kork-bom", version: "${korkVersion}"))
+  runtimeOnly "io.armory.plugin:plugin-commons:0.0.4"
+  compileOnly "io.spinnaker.kork:kork-plugins-spring-api"
+
+  annotationProcessor ("org.pf4j:pf4j:$pf4jVersion")
+  annotationProcessor ("org.projectlombok:lombok")
+  annotationProcessor platform("io.spinnaker.orca:orca-bom:${orcaVersion}")
+
+  compileOnly "io.spinnaker.kork:kork-plugins-spring-api"
+  compileOnly "io.spinnaker.kork:kork-credentials-api"
+  compileOnly "io.spinnaker.kork:kork-retrofit"
+
+  compileOnly "io.spinnaker.orca:orca-api"
+  compileOnly "io.spinnaker.orca:orca-core"
+  compileOnly "io.spinnaker.orca:orca-igor"
+  compileOnly "io.spinnaker.orca:orca-retrofit"
+  compileOnly "org.projectlombok:lombok"
+
+
   testImplementation(enforcedPlatform(group: "io.spinnaker.orca", name: "orca-bom", version: "${orcaVersion}"))
   testImplementation "io.spinnaker.orca:orca-api"
   testImplementation "io.spinnaker.orca:orca-api-tck"
@@ -62,6 +67,7 @@ dependencies {
   testRuntime "org.junit.jupiter:junit-jupiter-engine:5.4.0"
   testRuntime "org.junit.platform:junit-platform-launcher:1.4.0"
   testRuntime "org.junit.platform:junit-platform-commons:1.5.2"
+
 }
 
 compileTestKotlin {

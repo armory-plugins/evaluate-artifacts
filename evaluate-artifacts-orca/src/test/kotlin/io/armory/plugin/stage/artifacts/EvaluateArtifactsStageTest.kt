@@ -18,7 +18,7 @@ class EvaluateArtifactsStageTest : JUnit5Minutests {
       val stage = stage {
         type = "evaluateArtifacts"
         context = mapOf(
-          "artifactContents" to emptyList<EvaluateArtifactsStage.EvaluateArtifactsStageContext.Content>(),
+          "artifactContents" to emptyList<EvaluateArtifactsStage.EvaluateArtifactsStageContext>(),
           "expectedArtifacts" to emptyList<ExpectedArtifact>()
         )
       }
