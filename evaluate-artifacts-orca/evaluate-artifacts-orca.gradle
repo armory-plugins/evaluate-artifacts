@@ -42,7 +42,9 @@ dependencies {
   compileOnly "io.spinnaker.orca:orca-api"
   compileOnly "io.spinnaker.orca:orca-core"
   compileOnly "io.spinnaker.orca:orca-igor"
-  compileOnly "io.spinnaker.orca:orca-retrofit"
+  compileOnly ("io.spinnaker.orca:orca-retrofit") {
+    exclude group: "org.apache.groovy", module: "groovy"
+  }
   compileOnly "org.projectlombok:lombok"
 
 
@@ -64,16 +66,16 @@ dependencies {
   testImplementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.1"
   testImplementation "javax.servlet:javax.servlet-api:4.0.1"
 
-  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.4.0"
-  testRuntime "org.junit.platform:junit-platform-launcher:1.4.0"
-  testRuntime "org.junit.platform:junit-platform-commons:1.5.2"
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.4.0"
+  testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.4.0"
+  testRuntimeOnly "org.junit.platform:junit-platform-commons:1.5.2"
 
 }
 
 compileTestKotlin {
   kotlinOptions {
-    languageVersion = "1.3"
-    jvmTarget = "11"
+    languageVersion = "1.6"
+    jvmTarget = "17"
   }
 }
 
