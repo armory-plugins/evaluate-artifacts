@@ -22,10 +22,14 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v2
 
-      - name: set up java
-        uses: actions/setup-java@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          java-version: 11
+          java-version: |
+            11
+            17
+          distribution: 'zulu'
+          cache: 'gradle'
 
       - name: run tests
         run: ./gradlew test
@@ -34,7 +38,7 @@ jobs:
         run: ./gradlew releaseBundle
 
       - name: archive build artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: build/distributions
