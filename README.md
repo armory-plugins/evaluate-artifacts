@@ -3,7 +3,7 @@
 The [evaluateArtifactsStagePlugin](https://github.com/armory-plugins/evaluate-artifacts), also called the EvaluateArtifacts plugin, creates a custom pipeline stage that evaluates artifacts of a pipeline for SpEL expressions.
 
 # Version Compatibility
-
+test
 | Plugin  | Spinnaker Platform |
 |:----------- | :--------- |
 | 1.0.x  | 1.24.x |
