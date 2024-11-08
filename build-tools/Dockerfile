@@ -1,4 +1,6 @@
-FROM busybox:latest
+FROM armory/armory-alpine-base-jre:latest
+
+MAINTAINER spin-klo-team@harness.io
 
 RUN mkdir -p /opt/plugin
 
