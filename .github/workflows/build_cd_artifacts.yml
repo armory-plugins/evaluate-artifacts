@@ -25,10 +25,10 @@ jobs:
           cache: 'gradle'
 
       - name: build
-        run: ./gradlew releaseBundle $GRADLE_ARGS
+        run: ./gradlew -PenableCrossCompilerPlugin=true releaseBundle $GRADLE_ARGS
 
       - name: archive build artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: build/distributions
