@@ -24,6 +24,15 @@ jobs:
             17
           distribution: 'zulu'
           cache: 'gradle'
+      - name: Fix up git URLs
+        if: matrix.service == 'deck-armory'
+        run: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
+
+      - name: Set up Node
+        if: matrix.service == 'deck-armory'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
       - name: run tests
         run: ./gradlew test
       - name: build
