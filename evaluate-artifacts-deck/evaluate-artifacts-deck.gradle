@@ -10,8 +10,7 @@ task generateNpmRc(type: Exec) {
             "echo \"fetch-retries=5\" >> .npmrc && " +
             "echo \"fetch-retry-maxtimeout=60000\" >> .npmrc && " +
             "echo \"fetch-retry-mintimeout=10000\" >> .npmrc && " +
-            "echo \"public-hoist-pattern[]=*\" >> .npmrc && " +
-            "pnpm config set //pkg.harness.io/pkg/NK24qb_MQ0aYFnTJmNEjiw/armory-deck/npm/:_authToken ${harness_artifact_password}"
+            "echo \"public-hoist-pattern[]=*\" >> .npmrc && "
 }
 
 yarn.dependsOn generateNpmRc

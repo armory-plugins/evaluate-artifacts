@@ -27,4 +27,4 @@ jobs:
       - name: run tests
         run: ./gradlew test
       - name: build
-        run: ./gradlew --info -PenableCrossCompilerPlugin=true releaseBundle
+        run: ./gradlew -PenableCrossCompilerPlugin=true releaseBundle
