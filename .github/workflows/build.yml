@@ -25,6 +25,6 @@ jobs:
           distribution: 'zulu'
           cache: 'gradle'
       - name: run tests
-        run: ./gradlew test
+        run: ./gradlew --info test
       - name: build
         run: ./gradlew -PenableCrossCompilerPlugin=true releaseBundle
