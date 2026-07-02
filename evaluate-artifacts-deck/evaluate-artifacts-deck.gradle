@@ -10,7 +10,7 @@ task generateNpmRc(type: Exec) {
             "echo \"fetch-retries=5\" >> .npmrc && " +
             "echo \"fetch-retry-maxtimeout=60000\" >> .npmrc && " +
             "echo \"fetch-retry-mintimeout=10000\" >> .npmrc && " +
-            "echo \"public-hoist-pattern[]=*\" >> .npmrc && "
+            "echo \"public-hoist-pattern[]=*\" >> .npmrc"
 }
 
 yarn.dependsOn generateNpmRc
