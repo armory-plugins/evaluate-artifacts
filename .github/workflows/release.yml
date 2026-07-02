@@ -3,58 +3,46 @@ name: Release
 on:
   push:
     tags:
-    - 'v*'
+      - 'v*'
 
 jobs:
   build:
     name: Release Plugin
     runs-on: ubuntu-latest
     env:
-      ORG_GRADLE_PROJECT_artifactory_user: '${{secrets.ARTIFACTORY_USER}}'
-      ORG_GRADLE_PROJECT_artifactory_password: '${{secrets.ARTIFACTORY_TOKEN}}'
-      ARTIFACTORY_USER: '${{secrets.ARTIFACTORY_USER}}'
-      ARTIFACTORY_PASSWORD: '${{secrets.ARTIFACTORY_TOKEN}}'
+      HARNESS_ARTIFACT_PASSWORD: ${{secrets.HARNESS_ARTIFACTORY_PASSWORD}}
+      ORG_GRADLE_PROJECT_harness_artifact_user: '${{secrets.HARNESS_ARTIFACTORY_USER}}'
+      ORG_GRADLE_PROJECT_harness_artifact_password: '${{secrets.HARNESS_ARTIFACTORY_PASSWORD}}'
     steps:
-      - name: Fix up git URLs
-        run: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
-
       - name: checkout code
         uses: actions/checkout@v2
-
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: |
-            11
             17
           distribution: 'zulu'
           cache: 'gradle'
-
       - name: run tests
         run: ./gradlew test
-
       - name: build
         run: ./gradlew -PenableCrossCompilerPlugin=true releaseBundle
-
       - name: get project info
         id: get_project_info
         run: |
           echo ::set-output name=PROJECT::$(basename `pwd`)
           echo ::set-output name=PROJECT_KEBAB::$(basename `pwd` | sed 's/\([a-z0-9]\)\([A-Z]\)/\1_\L\2/g')
           echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+          echo ::set-output name=STRIPPED_VERSION::$(echo ${GITHUB_REF/refs\/tags\//} | sed 's/v//')
           echo ::set-output name=REPO::${GITHUB_REPOSITORY}
-
       - name: build docker image
         run: |
-          docker build -t armory/${{ steps.get_project_info.outputs.PROJECT }}:${{ steps.get_project_info.outputs.VERSION }} -f build-tools/Dockerfile .
-
+          ./gradlew -PenableCrossCompilerPlugin=true docker
       - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
-
+        run: docker login -u ${{ secrets.DOCKER_HUB_USER_BOT }} -p '${{ secrets.DOCKER_HUB_TOKEN }}'
       - name: Publish Image to Docker Hub
         run: |
-          docker push armory/${{ steps.get_project_info.outputs.PROJECT }}:${{ steps.get_project_info.outputs.VERSION }}
-
+          ./gradlew -PenableCrossCompilerPlugin=true dockerPush
       - name: create release
         id: create_release
         uses: actions/create-release@v1
@@ -65,28 +53,16 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-
       - name: upload release asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./build/distributions/${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip
-          asset_name: ${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip
-          asset_content_type: application/zip
-
-      - name: upload release asset for deck
+        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./evaluate-artifacts-deck/build/dist/index.js
-          asset_name: EvaluateArtifactsStageIndex.js
-          asset_content_type: text/javascript
-          
+          asset_path: ./build/distributions/${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.STRIPPED_VERSION }}.zip
+          asset_name: ${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.STRIPPED_VERSION }}.zip
+          asset_content_type: application/zip
       - name: add release to plugin repo
         id: add-release
         uses: armory-io/plugin-metadata-updater@master
@@ -95,5 +71,8 @@ jobs:
           GITHUB_OAUTH: ${{ secrets.TOKEN }}
         with:
           metadata: build/distributions/plugin-info.json
-          binary_url: https://github.com/${{ steps.get_project_info.outputs.REPO }}/releases/download/${{ steps.get_project_info.outputs.VERSION }}/${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip
+          binary_url: https://github.com/${{ steps.get_project_info.outputs.RELEASE_REPO }}/releases/download/${{ steps.get_project_info.outputs.VERSION }}/${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.STRIPPED_VERSION }}.zip
           metadata_repo_url: https://github.com/armory-plugins/pluginRepository
+      - name: add release to global plugin repo
+        run: |
+          curl -v -XPOST -u "${{ secrets.USERNAME }}:${{ secrets.TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/armory-plugins/pluginRepository/dispatches --data "{\"event_type\": \"onPluginRelease\", \"client_payload\": {\"org\": \"armory-plugins\", \"repo\": \"${{ steps.get_project_info.outputs.PROJECT }}\", \"releaseRepo\": \"evaluate-artifacts\", \"version\": \"${{ steps.get_project_info.outputs.VERSION }}\", \"artifactName\": \"${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip\", \"released\": $(cat build/distributions/plugin-info.json)}}"

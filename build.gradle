@@ -2,11 +2,20 @@ buildscript {
   repositories {
     mavenCentral()
     maven {
-      url 'https://armory.jfrog.io/armory/gradle-plugins/'
+      url "https://pkg.harness.io/pkg/NK24qb_MQ0aYFnTJmNEjiw/gradle-plugins/maven"
       credentials {
-        username = "${artifactory_user}"
-        password = "${artifactory_password}"
+        username = "${harness_artifact_user}"
+        password = "${harness_artifact_password}"
       }
+    }
+  }
+  dependencies {
+  }
+  configurations.classpath {
+    resolutionStrategy {
+      force "com.fasterxml.jackson.core:jackson-core:2.16.0"
+      force "com.fasterxml.jackson.core:jackson-databind:2.16.0"
+      force "com.fasterxml.jackson.core:jackson-annotations:2.16.0"
     }
   }
 }
@@ -32,18 +41,10 @@ subprojects {
   repositories {
     mavenCentral()
     maven {
-      url 'https://armory.jfrog.io/armory/gradle-dev-local/'
+      url "https://pkg.harness.io/pkg/NK24qb_MQ0aYFnTJmNEjiw/armory-oss-maven/maven"
       credentials {
-        username = "${artifactory_user}"
-        password = "${artifactory_password}"
-      }
-    }
-
-    maven {
-      url 'https://armory.jfrog.io/artifactory/spinnaker/'
-      credentials {
-        username = "${artifactory_user}"
-        password = "${artifactory_password}"
+        username = "${harness_artifact_user}"
+        password = "${harness_artifact_password}"
       }
     }
   }

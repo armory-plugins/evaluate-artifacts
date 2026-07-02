@@ -1,6 +1,14 @@
 buildscript {
   repositories {
     mavenCentral()
+    maven{
+      url "https://pkg.harness.io/pkg/NK24qb_MQ0aYFnTJmNEjiw/armory-maven/maven"
+
+      credentials {
+        username = "${harness_artifact_user}"
+        password = "${harness_artifact_password}"
+      }
+    }
   }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
@@ -16,6 +24,14 @@ apply plugin: "kotlin-spring"
 
 repositories {
   mavenCentral()
+  maven{
+    url "https://pkg.harness.io/pkg/NK24qb_MQ0aYFnTJmNEjiw/armory-maven/maven"
+
+    credentials {
+      username = "${harness_artifact_user}"
+      password = "${harness_artifact_password}"
+    }
+  }
 }
 
 spinnakerPlugin {
@@ -28,7 +44,7 @@ dependencies {
   implementation platform("io.spinnaker.orca:orca-bom:${orcaVersion}")
   compileOnly(enforcedPlatform(group: "io.spinnaker.kork", name: "kork-bom", version: "${korkVersion}"))
 
-  runtimeOnly "io.armory.plugin:plugin-commons:0.0.4"
+  //runtimeOnly "io.armory.plugin:plugin-commons:0.0.4"
   compileOnly "io.spinnaker.kork:kork-plugins-spring-api"
 
   annotationProcessor ("org.pf4j:pf4j:$pf4jVersion")
@@ -56,14 +72,14 @@ dependencies {
   testImplementation "io.spinnaker.orca:orca-test-groovy"
   testImplementation (group: 'io.spinnaker.orca', name: 'orca-core')
   testImplementation (group: 'io.spinnaker.kork', name: 'kork-plugins-spring-api')
-  testImplementation "io.armory.commons:armory-commons-plugins:${armoryCommonsVersion}"
+  //testImplementation "io.armory.commons:armory-commons-plugins:${armoryCommonsVersion}"
 
 
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.2"
   testImplementation "io.strikt:strikt-core:0.22.1"
   testImplementation "dev.minutest:minutest:1.10.0"
   testImplementation "io.mockk:mockk:1.9.3"
-  testImplementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.1"
+  testImplementation "com.fasterxml.jackson.module:jackson-module-kotlin"
   testImplementation "javax.servlet:javax.servlet-api:4.0.1"
 
   testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.4.0"

@@ -11,34 +11,20 @@ jobs:
     name: Build Plugin
     runs-on: ubuntu-latest
     env:
-      ORG_GRADLE_PROJECT_artifactory_user: '${{secrets.ARTIFACTORY_USER}}'
-      ORG_GRADLE_PROJECT_artifactory_password: '${{secrets.ARTIFACTORY_TOKEN}}'
-      ARTIFACTORY_USER: '${{secrets.ARTIFACTORY_USER}}'
-      ARTIFACTORY_PASSWORD: '${{secrets.ARTIFACTORY_TOKEN}}'
+      HARNESS_ARTIFACT_PASSWORD: ${{secrets.HARNESS_ARTIFACTORY_PASSWORD}}
+      ORG_GRADLE_PROJECT_harness_artifact_user: '${{secrets.HARNESS_ARTIFACTORY_USER}}'
+      ORG_GRADLE_PROJECT_harness_artifact_password: '${{secrets.HARNESS_ARTIFACTORY_PASSWORD}}'
     steps:
-      - name: Fix up git URLs
-        run: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
-
       - name: checkout code
         uses: actions/checkout@v2
-
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: |
-            11
             17
           distribution: 'zulu'
           cache: 'gradle'
-
       - name: run tests
         run: ./gradlew test
-
       - name: build
         run: ./gradlew -PenableCrossCompilerPlugin=true releaseBundle
-
-      - name: archive build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: build/distributions
