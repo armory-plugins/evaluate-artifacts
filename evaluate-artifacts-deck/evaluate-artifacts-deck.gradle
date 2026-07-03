@@ -2,9 +2,15 @@ apply plugin: "io.spinnaker.plugin.ui-extension"
 
 task generateNpmRc(type: Exec) {
     workingDir "$projectDir"
-    commandLine "sh", "-c", "echo \"@spinnaker:registry=https://armory.jfrog.io/artifactory/api/npm/npm-all/\" > .npmrc && " +
-            "curl -u${artifactory_user}:${artifactory_password} https://armory.jfrog.io/artifactory/api/npm/auth >> .npmrc &&" +
-            "sed -i -e 's/_auth/\\/\\/armory.jfrog.io\\/artifactory\\/api\\/npm\\/npm-all\\/:_auth/' .npmrc"
+    commandLine "sh", "-c", "echo \"always-auth=true\" > .npmrc && " +
+            "echo 'registry=https://pkg.harness.io/pkg/NK24qb_MQ0aYFnTJmNEjiw/armory-deck/npm/' >> .npmrc && " +
+            "echo \"//pkg.harness.io/pkg/NK24qb_MQ0aYFnTJmNEjiw/armory-deck/npm/:_authToken=${harness_artifact_password}\" >> .npmrc && " +
+            "echo \"strict-ssl=false\" >> .npmrc && " +
+            "echo \"loglevel=verbose\" >> .npmrc && " +
+            "echo \"fetch-retries=5\" >> .npmrc && " +
+            "echo \"fetch-retry-maxtimeout=60000\" >> .npmrc && " +
+            "echo \"fetch-retry-mintimeout=10000\" >> .npmrc && " +
+            "echo \"public-hoist-pattern[]=*\" >> .npmrc"
 }
 
 yarn.dependsOn generateNpmRc

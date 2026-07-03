@@ -21,7 +21,6 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.netflix.spinnaker.kork.plugins.internal.PluginJar
 import com.netflix.spinnaker.orca.StageResolver
 import com.netflix.spinnaker.orca.api.test.OrcaFixture
-import io.armory.commons.plugins.ArmoryServiceVersionManager
 import java.io.File
 import org.pf4j.VersionManager
 import org.springframework.beans.factory.annotation.Autowired
@@ -69,7 +68,10 @@ class OrcaPluginsFixture : OrcaFixture() {
     @Primary
     @Bean
     fun armoryVersionManager(): VersionManager {
-      return ArmoryServiceVersionManager("orca")
+      return object : VersionManager {
+        override fun checkVersionConstraint(version: String, constraint: String) = true
+        override fun compareVersions(v1: String, v2: String) = 0
+      }
     }
   }
 }

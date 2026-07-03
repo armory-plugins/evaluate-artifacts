@@ -1,7 +1,35 @@
 pluginManagement {
+  plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+    id 'org.jetbrains.kotlin.kapt' version '1.9.0'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.0'
+  }
   repositories {
-    mavenCentral()
+    mavenLocal()
+    maven{
+      url "https://pkg.harness.io/pkg/NK24qb_MQ0aYFnTJmNEjiw/gradle-plugins/maven"
+      credentials {
+        username = "${harness_artifact_user}"
+        password = "${harness_artifact_password}"
+      }
+    }
+    maven{
+      url "https://pkg.harness.io/pkg/NK24qb_MQ0aYFnTJmNEjiw/armory-maven/maven"
+
+      credentials {
+        username = "${harness_artifact_user}"
+        password = "${harness_artifact_password}"
+      }
+    }
+    maven{
+      url "https://pkg.harness.io/pkg/NK24qb_MQ0aYFnTJmNEjiw/armory-oss-maven/maven"
+      credentials {
+        username = "${harness_artifact_user}"
+        password = "${harness_artifact_password}"
+      }
+    }
     gradlePluginPortal()
+    mavenCentral()
   }
 }
 
