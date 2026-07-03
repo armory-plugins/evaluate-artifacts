@@ -41,14 +41,6 @@ jobs:
           echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
           echo ::set-output name=STRIPPED_VERSION::$(echo ${GITHUB_REF/refs\/tags\//} | sed 's/v//')
           echo ::set-output name=REPO::${GITHUB_REPOSITORY}
-      - name: build docker image
-        run: |
-          ./gradlew -PenableCrossCompilerPlugin=true docker
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_HUB_USER_BOT }} -p '${{ secrets.DOCKER_HUB_TOKEN }}'
-      - name: Publish Image to Docker Hub
-        run: |
-          ./gradlew -PenableCrossCompilerPlugin=true dockerPush
       - name: create release
         id: create_release
         uses: actions/create-release@v1
