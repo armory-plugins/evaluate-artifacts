@@ -64,8 +64,8 @@ subprojects {
 }
 
 String normalizedVersion() {
-  String fullVersion = gitVersion()
-  String normalized = fullVersion.split("-").first()
+  String fullVersion = System.getenv('VERSION') ?: gitVersion()
+  String normalized = fullVersion.split("-").first().replace("v","")
   if (fullVersion.contains("dirty")) {
     return "$normalized-SNAPSHOT"
   } else {
